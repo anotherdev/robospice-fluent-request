@@ -1,5 +1,6 @@
 package com.anotherdev.android.robospice;
 
+import com.anotherdev.android.robospice.request.Cacheable;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.request.SpiceRequest;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -9,7 +10,7 @@ import javax.annotation.Nullable;
 
 public class RequestCreator {
 
-    private final SpiceManager mSpiceManager;
+    private final SpiceManager mManager;
 
     private Optional<String> mCacheKey = Optional.absent();
     private Optional<Long> mCacheExpiry = Optional.absent();
@@ -21,7 +22,7 @@ public class RequestCreator {
         if (manager == null) {
             throw new IllegalArgumentException("SpiceManager must not be null");
         }
-        mSpiceManager = manager;
+        mManager = manager;
     }
 
     public RequestCreator cache(@Nullable String key) {
@@ -53,6 +54,21 @@ public class RequestCreator {
     }
 
     <T> void execute(SpiceRequest<T> request, RequestListener<T> listener) {
-        // TODO hand off to SpiceManager
+        if (request instanceof Cacheable) {
+            Cacheable cacheable = (Cacheable) request;
+            Optional<String> cacheKey = Optional.from(cacheable.getCacheKey());
+
+            final String key = mCacheKey.or(cacheKey).orNull();
+            final long expiry = mCacheExpiry.or(cacheable.getCacheDurationInMillis());
+            final boolean acceptDirtyCache = mAcceptDirtyCache.or(cacheable.isAcceptingDirtyCache());
+
+            if (acceptDirtyCache) {
+                mManager.getFromCacheAndLoadFromNetworkIfExpired(request, key, expiry, listener);
+            } else {
+                mManager.execute(request, key, expiry, listener);
+            }
+        } else {
+            mManager.execute(request, listener);
+        }
     }
 }
