@@ -23,14 +23,17 @@ abstract class Optional<T> {
 
     public abstract T or(T defaultValue);
 
+    public abstract Optional<T> or(Optional<? extends T> secondChoice);
+
     @Nullable
     public abstract T orNull();
 
-    protected T checkNotNull(T reference) {
+
+    protected static <R> R checkNotNull(R reference) {
         return checkNotNull(reference, null);
     }
 
-    protected T checkNotNull(T reference, @Nullable CharSequence errorMessage) {
+    protected static <R> R checkNotNull(R reference, @Nullable CharSequence errorMessage) {
         if (reference == null) {
             if (errorMessage == null) {
                 throw new NullPointerException();
