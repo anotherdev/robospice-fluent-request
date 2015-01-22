@@ -30,6 +30,12 @@ final class Absent<T> extends Optional<T> {
         return checkNotNull(defaultValue, "Use Optional.orNull() instead of Optional.or(null)");
     }
 
+    @SuppressWarnings("unchecked") // safe covariant cast
+    @Override
+    public Optional<T> or(Optional<? extends T> secondChoice) {
+        return (Optional<T>) checkNotNull(secondChoice);
+    }
+
     @Nullable
     @Override
     public T orNull() {

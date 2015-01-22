@@ -28,6 +28,12 @@ final class Present<T> extends Optional<T> {
         return mReference;
     }
 
+    @Override
+    public Optional<T> or(Optional<? extends T> secondChoice) {
+        checkNotNull(secondChoice);
+        return this;
+    }
+
     @Nullable
     @Override
     public T orNull() {
