@@ -2,6 +2,7 @@ package com.anotherdev.android.robospice;
 
 import com.anotherdev.android.robospice.request.Cacheable;
 import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.request.SpiceRequest;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.octo.android.robospice.retry.RetryPolicy;
@@ -54,21 +55,30 @@ public class RequestCreator {
     }
 
     <T> void execute(SpiceRequest<T> request, RequestListener<T> listener) {
+        Optional<String> requestKey = Optional.absent();
+        Optional<Long> requestExpiry = Optional.absent();
+        Optional<Boolean> requestAcceptDirty = Optional.absent();
+
         if (request instanceof Cacheable) {
             Cacheable cacheable = (Cacheable) request;
-            Optional<String> cacheKey = Optional.from(cacheable.getCacheKey());
+            requestKey = Optional.from(cacheable.getCacheKey());
+            requestExpiry = Optional.from(cacheable.getCacheDurationInMillis());
+            requestAcceptDirty = Optional.from(cacheable.isAcceptingDirtyCache());
+        }
 
-            final String key = mCacheKey.or(cacheKey).orNull();
-            final long expiry = mCacheExpiry.or(cacheable.getCacheDurationInMillis());
-            final boolean acceptDirtyCache = mAcceptDirtyCache.or(cacheable.isAcceptingDirtyCache());
+        if (mRetryPolicy.isPresent()) {
+            // Override RetryPolicy
+            request.setRetryPolicy(mRetryPolicy.get());
+        }
 
-            if (acceptDirtyCache) {
-                mManager.getFromCacheAndLoadFromNetworkIfExpired(request, key, expiry, listener);
-            } else {
-                mManager.execute(request, key, expiry, listener);
-            }
+        final String key = mCacheKey.or(requestKey).orNull();
+        final long expiry = mCacheExpiry.or(requestExpiry).or(DurationInMillis.ALWAYS_EXPIRED);
+        final boolean acceptDirtyCache = mAcceptDirtyCache.or(requestAcceptDirty).or(false);
+
+        if (acceptDirtyCache) {
+            mManager.getFromCacheAndLoadFromNetworkIfExpired(request, key, expiry, listener);
         } else {
-            mManager.execute(request, listener);
+            mManager.execute(request, key, expiry, listener);
         }
     }
 }
