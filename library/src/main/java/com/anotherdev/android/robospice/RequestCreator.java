@@ -55,6 +55,10 @@ public class RequestCreator {
     }
 
     <T> void execute(SpiceRequest<T> request, RequestListener<T> listener) {
+        if (request == null) {
+            throw new IllegalArgumentException("SpiceRequest must not be null");
+        }
+
         Optional<String> requestKey = Optional.absent();
         Optional<Long> requestExpiry = Optional.absent();
         Optional<Boolean> requestAcceptDirty = Optional.absent();
