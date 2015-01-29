@@ -20,4 +20,4 @@ deployment:
   production:
     branch: master
     commands:
-      - ./gradlew clean build generateRelease
+      - ./gradlew clean build generateRelease -PdisablePreDex
