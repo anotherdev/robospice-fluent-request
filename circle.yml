@@ -15,3 +15,9 @@ dependencies:
 test:
   override:
     - ./gradlew check
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - ./gradlew clean build generateRelease
