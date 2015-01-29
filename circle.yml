@@ -1,8 +1,17 @@
+machine:
+  environment:
+    ANDROID_HOME: /home/ubuntu/android
+
 dependencies:
+  cache_directories:
+      - ~/.android
+      - ~/android
   pre:
     - echo y | android update sdk --no-ui --filter "android-21"
   override:
+    - ./install-dependencies.sh
     - ./gradlew dependencies
+
 test:
   override:
     - ./gradlew check
