@@ -46,7 +46,7 @@ public class RequestCreator {
         return this;
     }
 
-    public <T> RequestExecutor<T> notify(RequestListener<T> listener) {
+    public <T> RequestExecutor<T> inform(RequestListener<T> listener) {
         return new RequestExecutor<>(this, listener);
     }
 
