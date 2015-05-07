@@ -1,4 +1,4 @@
-# robospice-fluent-request
+robospice-fluent-request
 ==========================
 
 A fluent api wrapper for RoboSpice requests.
@@ -16,6 +16,8 @@ compile 'com.anotherdev.android.robospice:robospice-fluent-request:0.1.0'
 Usage
 =====
 
+Local override
+
 ```java
 RoboSpice.with(SpiceManager manager)
     .cache(@Nullable String key)
@@ -26,6 +28,8 @@ RoboSpice.with(SpiceManager manager)
     .inform(RequestListener<T> listener)
     .execute(SpiceRequest<T> request);
 ```
+
+Request specific defaults using [Cacheable](https://github.com/anotherdev/robospice-fluent-request/blob/master/library/src/main/java/com/anotherdev/android/robospice/request/Cacheable.java).
 
 
 License
