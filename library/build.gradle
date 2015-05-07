@@ -1,9 +1,25 @@
+// Version
+def versionMajor = 0
+def versionMinor = 1 // [0-9] minor feature releases
+def versionPatch = 0 // [0-9] This should be bumped for hot fixes
+def versionBuild = 0 // [0-99] bump for dogfood builds, public betas, etc.
+
+// Double check the versioning
+assert 0 <= versionMajor
+for (versionPart in [versionPatch, versionMinor]) {
+    assert 0 <= versionPart
+    assert versionPart <= 9
+}
+assert 0 <= versionBuild
+assert versionBuild <= 99
+
+
 apply plugin: 'com.android.library'
 
 ext {
     PUBLISH_GROUP_ID = 'com.anotherdev.android.robospice'
     PUBLISH_ARTIFACT_ID = 'robospice-fluent-request'
-    PUBLISH_VERSION = '0.0.1'
+    PUBLISH_VERSION = "${versionMajor}.${versionMinor}.${versionPatch}"
 }
 
 android {
@@ -13,8 +29,8 @@ android {
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
     buildTypes {
         release {
