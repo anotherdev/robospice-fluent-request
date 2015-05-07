@@ -17,6 +17,7 @@ public class RequestCreator {
     private Optional<Long> mCacheExpiry = Optional.absent();
     private Optional<Boolean> mAcceptDirtyCache = Optional.absent();
     private Optional<RetryPolicy> mRetryPolicy = Optional.absent();
+    private Optional<Integer> mPriority = Optional.absent();
 
 
     RequestCreator(SpiceManager manager) {
@@ -43,6 +44,11 @@ public class RequestCreator {
 
     public RequestCreator retry(RetryPolicy retryPolicy) {
         mRetryPolicy = Optional.from(retryPolicy);
+        return this;
+    }
+
+    public RequestCreator priority(int priority) {
+        mPriority = Optional.from(priority);
         return this;
     }
 
@@ -73,6 +79,11 @@ public class RequestCreator {
         if (mRetryPolicy.isPresent()) {
             // Override RetryPolicy
             request.setRetryPolicy(mRetryPolicy.get());
+        }
+
+        if (mPriority.isPresent()) {
+            // Override priority
+            request.setPriority(mPriority.get());
         }
 
         final String key = mCacheKey.or(requestKey).orNull();
