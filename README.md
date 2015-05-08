@@ -1,19 +1,20 @@
 robospice-fluent-request
-==========================
+========================
 
 A fluent api wrapper for RoboSpice requests.
 
 [RoboSpice](https://github.com/stephanenicolas/robospice) caches results for your requests if
-a cache key is supplied to the [SpiceManager.execute()](http://stephanenicolas.github.io/robospice/site/latest/apidocs/com/octo/android/robospice/SpiceManager.html#execute(com.octo.android.robospice.request.SpiceRequest, java.lang.Object, long, com.octo.android.robospice.request.listener.RequestListener%29)
+a cache key is supplied to the [SpiceManager.execute()](http://stephanenicolas.github.io/robospice/site/latest/apidocs/com/octo/android/robospice/SpiceManager.html#execute%28com.octo.android.robospice.request.SpiceRequest, java.lang.Object, long, com.octo.android.robospice.request.listener.RequestListener%29)
 method&mdash;every single time you submit a request.
 
-A default cache key and cache expiry can be defined for each request type by implementing [Cacheable](https://github.com/anotherdev/robospice-fluent-request/blob/master/library/src/main/java/com/anotherdev/android/robospice/request/Cacheable.java)
+A default cache key and cache expiry can be defined for each request type by implementing
+[Cacheable](https://github.com/anotherdev/robospice-fluent-request/blob/master/library/src/main/java/com/anotherdev/android/robospice/request/Cacheable.java)
 interface and submit the request using robospice-fluent-request.
 
 
 
 Download
---------
+========
 
 Gradle:
 ```groovy
@@ -31,7 +32,6 @@ RoboSpice.with(spiceManager).inform(requestListner).execute(spiceRequest);
 ```
 
 Options:
-
 Each option overrides the paramenter defined in the ```spiceRequest``` if the request implement
 [Cacheable](https://github.com/anotherdev/robospice-fluent-request/blob/master/library/src/main/java/com/anotherdev/android/robospice/request/Cacheable.java).
 
