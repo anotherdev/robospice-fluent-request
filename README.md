@@ -32,7 +32,7 @@ RoboSpice.with(spiceManager).inform(requestListner).execute(spiceRequest);
 ```
 
 Options:
-Each option overrides the paramenter defined in the ```spiceRequest``` if the request implement
+Each option overrides the paramenter defined in the `spiceRequest` if the request implement
 [Cacheable](https://github.com/anotherdev/robospice-fluent-request/blob/master/library/src/main/java/com/anotherdev/android/robospice/request/Cacheable.java).
 
 ```java
