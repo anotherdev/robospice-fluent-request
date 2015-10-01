@@ -1,6 +1,7 @@
 package com.anotherdev.android.robospice;
 
 import com.anotherdev.android.robospice.request.Cacheable;
+import com.anotherdev.android.robospice.rx.RxRequestListener;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.request.SpiceRequest;
@@ -8,6 +9,8 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import com.octo.android.robospice.retry.RetryPolicy;
 
 import javax.annotation.Nullable;
+
+import rx.Observable;
 
 public class RequestCreator {
 
@@ -56,8 +59,10 @@ public class RequestCreator {
         return new RequestExecutor<>(this, listener);
     }
 
-    public <T> void execute(SpiceRequest<T> request) {
-        execute(request, null);
+    public <T> Observable<T> execute(SpiceRequest<T> request) {
+        RxRequestListener<T> listener = new RxRequestListener<>();
+        execute(request, listener);
+        return  listener.asObservable();
     }
 
     <T> void execute(SpiceRequest<T> request, RequestListener<T> listener) {
