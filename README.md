@@ -18,7 +18,7 @@ Download
 
 Gradle:
 ```groovy
-compile 'com.anotherdev.android.robospice:robospice-fluent-request:0.1.0'
+compile 'com.anotherdev.android.robospice:robospice-fluent-request:1.0.0'
 ```
 
 
@@ -28,7 +28,8 @@ Usage
 Simple:
 ```java
 RoboSpice.with(spiceManager).execute(spiceRequest);
-RoboSpice.with(spiceManager).inform(requestListner).execute(spiceRequest);
+RoboSpice.with(spiceManager).execute(spiceRequest).subscribe(rx.Subscriber); // RxJava
+RoboSpice.with(spiceManager).inform(requestListner).execute(spiceRequest); // RoboSpice listener
 ```
 
 Options:
@@ -45,7 +46,6 @@ RoboSpice.with(spiceManager)
     .inform(requestListener)
     .execute(spiceRequest);
 ```
-
 
 License
 --------
