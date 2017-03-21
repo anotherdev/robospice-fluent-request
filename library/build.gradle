@@ -45,9 +45,9 @@ dependencies {
 
     compile 'com.octo.android.robospice:robospice:1.4.14'
 
-    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'io.reactivex:rxjava:1.2.7'
 
-    provided 'com.google.code.findbugs:jsr305:3.0.0'
+    provided 'com.google.code.findbugs:jsr305:3.0.1'
 }
 
 // Local
