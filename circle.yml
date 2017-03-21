@@ -1,5 +1,7 @@
 machine:
   environment:
+    java:
+      version: oraclejdk8
     ANDROID_HOME: /home/ubuntu/android
 
 dependencies:
@@ -7,7 +9,7 @@ dependencies:
       - ~/.android
       - ~/android
   pre:
-    - echo y | android update sdk --no-ui --filter "android-21"
+    - echo y | android update sdk --no-ui --filter "android-25"
   override:
     - ./install-dependencies.sh
     - ./gradlew dependencies
